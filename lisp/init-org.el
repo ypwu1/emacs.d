@@ -6,10 +6,30 @@
 ;; and you need install texlive-xetex on different platforms
 ;; To install texlive-xetex:
 ;;    `sudo USE="cjk" emerge texlive-xetex` on Gentoo Linux
-(setq org-latex-to-pdf-process
-      '("xelatex -interaction nonstopmode -output-directory %o %f"
-        "xelatex -interaction nonstopmode -output-directory %o %f"
-        "xelatex -interaction nonstopmode -output-directory %o %f"))
+;; syntax highlighted exported PDF
+(setq org-pygmentize-detected (executable-find "pygmentize"))
+(setq org-major-version-detected (car (version-to-list (org-version))))
+(cond
+ ((<= org-major-version-detected 7 )
+  (require 'org-latex)
+  (when org-pygmentize-detected
+    (add-to-list 'org-export-latex-packages-alist '("" "minted"))
+    (setq org-export-latex-listings 'minted))
+  )
+ (t
+  (require 'ox-latex)
+  (when org-pygmentize-detected
+    (add-to-list 'org-latex-packages-alist '("" "minted"))
+    (setq org-latex-listings 'minted))
+  ))
+(setq org-latex-export-cmd (concat "xelatex %s nonstopmode "
+                                   (if org-pygmentize-detected "-shell-escape -interaction" "")
+                                   " -output-directory \%o \%f"))
+
+;; @see https://github.com/redguardtoo/emacs.d/issues/213
+(setq org-latex-to-pdf-process (list org-latex-export-cmd
+                                      org-latex-export-cmd
+                                      org-latex-export-cmd))
 ;; }}
 
 (if (and *is-a-mac* (file-exists-p "/Applications/LibreOffice.app/Contents/MacOS/soffice"))
