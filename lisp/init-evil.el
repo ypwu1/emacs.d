@@ -223,6 +223,7 @@ to replace the symbol under cursor"
   "fn" 'cp-filename-of-current-buffer
   "fp" 'cp-fullpath-of-current-buffer
   "dj" 'dired-jump ;; open the dired from current file
+  "xf" 'find-file-in-repository
   "ff" 'toggle-full-window ;; I use WIN+F in i3
   "tm" 'get-term
   "px" 'paste-from-x-clipboard
@@ -371,7 +372,6 @@ to replace the symbol under cursor"
   "xm" 'smex
   "mx" 'helm-M-x
   "xx" 'er/expand-region
-  "xf" 'ido-find-file
   "xb" 'ido-switch-buffer
   "xc" 'save-buffers-kill-terminal
   "xo" 'helm-find-files

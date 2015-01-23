@@ -1079,4 +1079,6 @@ The full path into relative path insert it as a local file link in org-mode"
 ;; @see http://emacs.stackexchange.com/questions/3322/python-auto-indent-problem/3338#3338
 (if (fboundp 'electric-indent-mode) (electric-indent-mode -1))
 
+(require 'find-file-in-repository)
+
 (provide 'init-misc)
