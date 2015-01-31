@@ -1,0 +1,1 @@
+(add-to-list 'load-path "GOPATH/src/github.com/dougm/goflymake")

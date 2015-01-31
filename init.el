@@ -136,7 +136,7 @@
 (require 'init-web-mode)
 (require 'init-sr-speedbar)
 (require 'init-slime)
-(when *emacs24* (require 'init-company))
+;;(when *emacs24* (require 'init-company))
 (require 'init-stripe-buffer)
 (require 'init-eim) ;;  cannot be idle-required
 (require 'init-hs-minor-mode)
@@ -146,7 +146,6 @@
 
 ;; misc has some crucial tools I need immediately
 (require 'init-misc)
-
 ;; color theme
 (require 'color-theme)
 (require 'color-theme-molokai)
@@ -194,30 +193,29 @@
 ;;; End:
 (put 'erase-buffer 'disabled nil)
 ;;----------------------------------------------------------------------------
-;; gofmt
+;; go-flycheck
 ;;----------------------------------------------------------------------------
-(add-hook 'before-save-hook 'gofmt-before-save)
+; ((add-hook 'after-init-hook #'global-flycheck-mode)
+(add-to-list 'load-path "~/.gopm/src/github.com/dougm/goflymake")
+(require 'go-flycheck)
+(add-hook 'go-mode-hook 'flycheck-mode)
 ;;----------------------------------------------------------------------------
-;; go-compnay
+;; go-flymake
 ;;----------------------------------------------------------------------------
-(require 'company-go) 
-(setq company-tooltip-limit 20)                      ; bigger popup window
-(setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
-(setq company-echo-delay 0)                          ; remove annoying blinking
-(setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
-(add-hook 'go-mode-hook (lambda ()(set (make-local-variable 'company-backends) '(company-go))(company-mode))));; Only use company-mode with company-go in go-mode
-(custom-set-faces
- '(company-preview
-   ((t (:foreground "darkgray" :underline t))))
- '(company-preview-common
-   ((t (:inherit company-preview))))
- '(company-tooltip
-   ((t (:background "lightgray" :foreground "black"))))
- '(company-tooltip-selection
-   ((t (:background "steelblue" :foreground "white"))))
- '(company-tooltip-common
-   ((((type x)) (:inherit company-tooltip :weight bold))
-    (t (:inherit company-tooltip))))
- '(company-tooltip-common-selection
-   ((((type x)) (:inherit company-tooltip-selection :weight bold))
-    (t (:inherit company-tooltip-selection)))))
+;;(add-to-list 'load-path "~/.gopm/src/github.com/dougm/goflymake")
+;;(require 'go-flymake)
+;;----------------------------------------------------------------------------
+;; gofmt godef
+;;----------------------------------------------------------------------------
+(defun my-go-mode-hook ()
+  ; Call Gofmt before saving                                                    
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  ; Godef jump key binding                                                      
+  (local-set-key (kbd "M-.") 'godef-jump))
+(add-hook 'go-mode-hook 'my-go-mode-hook)
+;;----------------------------------------------------------------------------
+;; go-autocomplete
+;;----------------------------------------------------------------------------
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(add-hook 'go-mode-hook 'auto-complete-mode)
