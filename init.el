@@ -193,6 +193,20 @@
 ;;; End:
 (put 'erase-buffer 'disabled nil)
 ;;----------------------------------------------------------------------------
+;; go-mode go-import
+;;----------------------------------------------------------------------------
+(add-hook 'go-mode-hook '(lambda ()
+  (local-set-key (kbd "C-c C-r") 'go-remove-unused-imports)))
+
+(add-hook 'go-mode-hook '(lambda ()
+  (local-set-key (kbd "C-c C-g") 'go-goto-imports)))
+
+(add-hook 'go-mode-hook '(lambda ()
+  (local-set-key (kbd "C-c C-f") 'gofmt)))
+
+(add-hook 'go-mode-hook '(lambda ()
+  (local-set-key (kbd "C-c C-k") 'godoc)))
+;;----------------------------------------------------------------------------
 ;; go-flycheck
 ;;----------------------------------------------------------------------------
 ; ((add-hook 'after-init-hook #'global-flycheck-mode)
@@ -219,3 +233,8 @@
 (require 'go-autocomplete)
 (require 'auto-complete-config)
 (add-hook 'go-mode-hook 'auto-complete-mode)
+;;----------------------------------------------------------------------------
+;; go-oracle
+;;----------------------------------------------------------------------------
+(load "$GOPATH/src/code.google.com/p/go.tools/cmd/oracle/oracle.el")
+(add-hook 'go-mode-hook 'go-oracle-mode)
